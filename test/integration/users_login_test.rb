@@ -3,7 +3,9 @@ require 'test_helper'
 class UsersLoginTest < ActionDispatch::IntegrationTest
 
 	def setup
-		@user = users(:michael)	
+		# users corresponds to the fixture filename users.yml, 
+		# while the symbol :michael references user with the key shown in the yml file 
+		@user = users(:michael)
 	end
 
 	test "login with invalid information" do 
@@ -14,5 +16,11 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
 		assert_not flash.empty?
 		get root_path
 		assert flash.empty?
+	end
+
+	test "login with valid information" do
+		get login_path
+		post login_path, session:{ email: @user.email, password: 'password'}
+		assert_redirected_to @user
 	end
 end

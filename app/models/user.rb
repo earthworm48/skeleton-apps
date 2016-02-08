@@ -10,7 +10,8 @@ class User < ActiveRecord::Base
 
     # Returns the hash digest of the given string so that we can use it in the fixture.yml file
     def User.digest(string)
-    	cost = ActiveModel::SecurePassword.min_cost? Bcrypt::Engine::MIN_COST : Bcrypt::Engine.cost
-    	Bcrypt::Password.create(string, cost: cost)
+    	cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST : BCrypt::Engine.cost
+    	# Noted that the 'BCrypt', 'BC' is uppercase
+    	BCrypt::Password.create(string, cost: cost)
     end
 end
