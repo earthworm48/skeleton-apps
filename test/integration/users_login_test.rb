@@ -21,6 +21,17 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
 	test "login with valid information" do
 		get login_path
 		post login_path, session:{ email: @user.email, password: 'password'}
+		# to check the right redirect target 
 		assert_redirected_to @user
+		# to actually visit the target page
+		follow_redirect!
+		assert_template 'users/show'
+		
+		# For the nav bar:
+		# to tell assert_select that we expect there to be zero links matching the given pattern
+		assert_select "a[href=?]", login_path, count: 0
+		
+		#assert_select "a[href=?]", logout_path
+		#assert_select "a[href=?]", user_path(@user)
 	end
 end
