@@ -13,4 +13,22 @@ class ActiveSupport::TestCase
   	!session[:user_id].nil?
   end
   # Add more helper methods to be used by all tests here...
+
+  # Logs in as a test user
+  def log_in_as(user, options = {})
+  	password = options[:password] || "password"
+  	# set the default value as 'remember me'
+  	remember_me = options[:remember_me] || '1'
+  	if integration_test? # check the private method
+  		post login_path, session: { email: user.email, password: password, remember_me: remember_me}
+  	else
+  		session[:user_id] = user.id
+  	end
+  end
+
+  private
+  	def integration_test?
+  		defined?(post_via_redirect)
+  		# will return 'method'
+  	end
 end
