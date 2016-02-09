@@ -4,7 +4,8 @@ Rails.application.routes.draw do
   
   get 'login' => 'sessions#new'
   post 'login' => 'sessions#create'
-  get 'logout' => 'sessions#destroy'
+  # remember to put delete instead of get
+  delete 'logout' => 'sessions#destroy'
 
 
   get 'sign_up' => 'users#new'
