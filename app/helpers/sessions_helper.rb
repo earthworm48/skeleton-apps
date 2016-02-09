@@ -19,6 +19,7 @@ module SessionsHelper
 
 		# if the user_id and remember token is stored in the cookies
 		elsif (user_id = cookies.signed[:user_id])
+			# raise
 			user = User.find_by(id: user_id)
 			if user && user.authenticated?(cookies[:remember_token])
 				log_in user
