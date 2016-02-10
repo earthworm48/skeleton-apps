@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+
 	before_save { self.email = email.downcase }
 	# in the model, self is optional in the right-hand-side
 	validates :name, presence: true, length: {maximum: 50}
@@ -38,4 +39,5 @@ class User < ActiveRecord::Base
     def forget
 		update_attribute(:remember_digest, nil)    	
     end
+
 end
