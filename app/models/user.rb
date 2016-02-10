@@ -13,6 +13,7 @@ class User < ActiveRecord::Base
     # for storage in the cookies without storing it in the database
     attr_accessor :remember_token
 
+    # for the use of testing:
     # Returns the hash digest of the given string so that we can use it in the fixture.yml file
     def self.digest(string)
     	cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST : BCrypt::Engine.cost
