@@ -4,6 +4,7 @@ class UsersControllerTest < ActionController::TestCase
 
 	def setup
 		@user = users(:michael)
+		@other_user = users(:carmen)
 	end
 
   test "should get new" do
@@ -24,5 +25,19 @@ class UsersControllerTest < ActionController::TestCase
   	patch :update, id: @user, user: { name: @user.name, email: @user.email}
   	assert_not flash.empty?
   	assert_redirected_to login_url
+  end
+
+  test "edit: should redirect to login page when other user request to edit" do
+  	log_in_as(@other_user)
+  	get :edit, id: @user
+  	assert flash.empty?
+  	assert_redirected_to root_url
+  end
+
+  test "update: should redirect to login page when other user request to update" do
+  	log_in_as(@other_user)
+  	patch :update, id: @user, user: { name: @user.name, email: @user.email}
+  	assert flash.empty?
+  	assert_redirected_to root_url
   end
 end
