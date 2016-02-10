@@ -45,7 +45,10 @@ class User < ActiveRecord::Base
     private
     	def create_activation_digest
     		self.activation_token = User.new_token
-    		update_attribute(:activation_digest, User.digest(activation_token))
+    		# remember tokens and digests are created for users that already exist in the database, 
+    		# whereas the before_create callback happens before the user has been created
+    		self.activation_digest = User.digest(activation_token)
+    		# update_attribute(:activation_digest, User.digest(activation_token))
     	end
 
     	def downcase_email
