@@ -3,7 +3,7 @@ require 'test_helper'
 class UsersEditTest < ActionDispatch::IntegrationTest
 	def setup
 		@user = users(:michael)
-		log_in_as(@user)
+		# log_in_as(@user)
 	end
 
 	test "unsuccessful edit" do	
@@ -18,7 +18,7 @@ class UsersEditTest < ActionDispatch::IntegrationTest
 		# then fail because haven't log in
 		# ... so we log them in
 		log_in_as(@user)
-		assert_redirected_to edit_user_path
+		assert_redirected_to edit_user_path(@user)
 
 		# assert_template "users/edit" <- substituted
 		name = "hello"

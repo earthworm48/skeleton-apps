@@ -53,7 +53,7 @@ module SessionsHelper
 
 	# stores the url trying to be accessed
 	def store_location
-		byebug
+		# should save the request url if there is any request
 		session[:forwarding_url] = 	request.url if request.get?
 	end
 
