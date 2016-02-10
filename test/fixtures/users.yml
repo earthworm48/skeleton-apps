@@ -3,7 +3,8 @@ michael:
   email: michael@example.com
   password_digest: <%= User.digest('password') %>
   # create a password digest attribute for the fixture
-
+  admin: true
+  
 carmen:
   name: Carmen Sam
   email: carmen@gmail.com
