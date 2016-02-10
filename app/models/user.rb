@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
 	# after save and before create
-	before_create :create_activation_digests
+	before_create :create_activation_digest
 	before_save :downcase_email
 	# in the model, self is optional in the right-hand-side
 	validates :name, presence: true, length: {maximum: 50}
