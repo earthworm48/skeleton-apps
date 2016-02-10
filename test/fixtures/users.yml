@@ -4,11 +4,15 @@ michael:
   password_digest: <%= User.digest('password') %>
   # create a password digest attribute for the fixture
   admin: true
+  activated: true
+  activated_at: <%= Time.zone.now %>
   
 carmen:
   name: Carmen Sam
   email: carmen@gmail.com
   password_digest: <%= User.digest('password') %>
+  activated: true
+  activated_at: <%= Time.zone.now %>
 
 
 <% 30.times do |n| %>
@@ -16,5 +20,7 @@ user_<%= n %>:
   name: <%= "user_#{n}" %>
   email: <%= "user_#{n}@example.com"%>
   password_digest: <%= User.digest('password') %>
+  activated: true
+  activated_at: <%= Time.zone.now %>
 <% end %>
 
