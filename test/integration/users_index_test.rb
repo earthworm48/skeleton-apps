@@ -27,4 +27,11 @@ class UsersIndexTest < ActionDispatch::IntegrationTest
 			delete user_path(@non_admin)
 		end
 	end
+
+	test "index as non-admin" do
+		log_in_as(@non_admin)
+		get users_path
+		# to ensure that there is no delete method 
+		assert_select 'a[href=?]', text: 'delete user', count: 0
+	end
 end
