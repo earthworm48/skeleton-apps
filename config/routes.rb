@@ -2,6 +2,10 @@ Rails.application.routes.draw do
 
 
   
+  get 'password_resets/new'
+
+  get 'password_resets/edit'
+
   get 'login' => 'sessions#new'
   post 'login' => 'sessions#create'
   # remember to put delete instead of get
