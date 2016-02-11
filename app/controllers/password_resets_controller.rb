@@ -1,7 +1,8 @@
 class PasswordResetsController < ApplicationController
   before_action :get_user, only: [:edit, :update]
   before_action :valid_user, only: [:edit, :update]
-
+  before_action :check_expiration, only: [:edit, :update]
+  
   def new
   end
 
@@ -23,26 +24,38 @@ class PasswordResetsController < ApplicationController
   end
 
   def edit
-	
-	byebug
-	if 
-		render 'password_resets/edit'
-	else
-		flash[:danger] = "Wrong Authentication Link"
-		redirect_to root_url
-	end
   end
 
   def update
-  	
+  	if params[:user][:password].empty?
+  		@user.errors.add(:password, "can't be empty")
+  		render 'edit'
+  	elsif @user.update_attributes(user_params)
+  		log_in @user
+  		flash[:success] = "Password reset successfully"
+  		redirect_to @user
+  	else  #wrong format of password
+  		render 'edit'
+  	end
   end
 
   private
+  	def user_params
+  		params.require(:user).permit(:password,:password_confirmation)
+  	end
+
   	def get_user
   		@user = User.find_by(email: params[:email])
   	end
 
   	def valid_user
   		redirect_to root_url unless @user && @user.authenticated?(:reset, params[:id]) && @user.activated?
+  	end
+
+  	def check_expiration
+  		if @user.password_reset_expired?
+  			flash[:danger] = "Password reset has expired"
+  			redirect_to new_password_reset_url
+  		end
   	end
 end
