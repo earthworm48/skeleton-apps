@@ -12,7 +12,7 @@ class User < ActiveRecord::Base
     # has_secure_password includes a separate presence validation that specifically catches nil passwords. 
 	validates :password, presence: true, length: { minimum: 6 }, allow_nil: true
     # for storage in the cookies without storing it in the database
-    attr_accessor :remember_token, :activation_token
+    attr_accessor :remember_token, :activation_token, :reset_token
 
     # for the use to create BCrypt password:
     # Returns the hash digest of the given string so that we can use it in the fixture.yml file
@@ -54,6 +54,16 @@ class User < ActiveRecord::Base
 			update_attribute(:activated, true)
 			update_attribute(:activated_at, Time.zone.now)
     end
+
+    def create_reset_digest
+        self.reset_token = User.new_token
+        update_attribute(:reset_digest, User.digest(reset_token))
+        update_attribute(:reset_send_at, Time.zone.now)
+    end  
+
+    def send_reset_email
+        UserMailer.password_reset(self).deliver_now
+    end  
 
     private
     	def create_activation_digest
