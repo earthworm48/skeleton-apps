@@ -1,4 +1,7 @@
 class PasswordResetsController < ApplicationController
+  before_action :get_user, only: [:edit, :update]
+  before_action :valid_user, only: [:edit, :update]
+
   def new
   end
 
@@ -20,12 +23,12 @@ class PasswordResetsController < ApplicationController
   end
 
   def edit
-	@user = User.find_by(email: params[:email])
-
-	if @user && @user.authenticated?(:reset, params[:id])
+	
+	byebug
+	if 
 		render 'password_resets/edit'
 	else
-		flash.now[:danger] = "Wrong Authentication Link"
+		flash[:danger] = "Wrong Authentication Link"
 		redirect_to root_url
 	end
   end
@@ -33,4 +36,13 @@ class PasswordResetsController < ApplicationController
   def update
   	
   end
+
+  private
+  	def get_user
+  		@user = User.find_by(email: params[:email])
+  	end
+
+  	def valid_user
+  		redirect_to root_url unless @user && @user.authenticated?(:reset, params[:id]) && @user.activated?
+  	end
 end
