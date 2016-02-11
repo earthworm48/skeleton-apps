@@ -32,10 +32,12 @@ class User < ActiveRecord::Base
     	update_attribute(:remember_digest, User.digest(remember_token))
     end
 
-    # to convert the hash to password string '.new'
-    def authenticated?(remember_token)
-    	return false if remember_digest.nil?
-    	BCrypt::Password.new(remember_digest).is_password?(remember_token)
+  # to convert the hash to password string '.new'
+    def authenticated?(attribute, token)
+    	# Use 'send' to sends a message to an object instance (User in this case)
+    	digest = self.send("#{attribute}_digest")
+    	return false if digest.nil?
+    	BCrypt::Password.new(digest).is_password?(token)
     end
 
     def forget
