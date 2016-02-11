@@ -7,7 +7,7 @@ class PasswordResetsController < ApplicationController
   	if @user
 	  	# 1) create digest
 	  	@user.create_reset_digest
-	  	# 2) send email
+	  	# 2) send email -> you can check the email in user_mailer_preview.rb
 		@user.send_reset_email
 	  	# flash info
 	  	flash[:info] = "Email have been send to your account"
@@ -20,6 +20,14 @@ class PasswordResetsController < ApplicationController
   end
 
   def edit
+	@user = User.find_by(email: params[:email])
+
+	if @user && @user.authenticated?(:reset, params[:id])
+		render 'password_resets/edit'
+	else
+		flash.now[:danger] = "Wrong Authentication Link"
+		redirect_to root_url
+	end
   end
 
   def update
