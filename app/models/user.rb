@@ -65,6 +65,11 @@ class User < ActiveRecord::Base
         UserMailer.password_reset(self).deliver_now
     end  
 
+    def password_reset_expired?
+        # is password sent earlier than 2 hours ago?
+        reset_send_at < 2.hours.ago
+    end
+
     private
     	def create_activation_digest
     		self.activation_token = User.new_token
