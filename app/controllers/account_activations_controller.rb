@@ -8,11 +8,11 @@ class AccountActivationsController < ApplicationController
 		# because we’ll be logging in users upon confirmation and 
 		# we don’t want to allow attackers who manage to obtain the activation link to log in as the user.
 		if @user && @user.authenticated?(:activation, params[:id]) && !@user.activated?
-			user.update_attribute(:activated, true)
-			user.update_attribute(:activated_at, Time.zone.now)
+			@user.update_attribute(:activated, true)
+			@user.update_attribute(:activated_at, Time.zone.now)
 			# you can use session helper everywhere because we have include it 
 			# in application controller
-			log_in user
+			log_in @user
 			flash[:success] = "Welcome to the apps"
 			redirect_to @user
 		else
